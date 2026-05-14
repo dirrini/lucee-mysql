@@ -1,0 +1,23 @@
+# Lucee + MySQL Example
+
+Projeto mínimo em Lucee que acessa a tabela `mensagens` e exibe a primeira mensagem na página.
+
+## Como usar
+
+1. Execute `docker compose up -d`
+2. Abra no navegador: http://localhost:8080
+
+## Estrutura
+
+- `docker-compose.yml` - ambiente Lucee + MySQL
+- `db/init-db.sql` - cria a base `luceeapp` e a tabela `mensagens`
+- `src/Application.cfc` - configura o datasource `mydb`
+- `src/index.cfm` - consulta `mensagens` e exibe a primeira mensagem
+
+## Resultado esperado
+
+A página deve mostrar:
+
+```
+Hello world
+```
