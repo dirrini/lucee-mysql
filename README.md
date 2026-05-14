@@ -21,5 +21,6 @@ A página deve mostrar:
 ```
 **Autor 1** Mensagem 1
 **Autor 2** Mensagem 2
+**Autor 3** Mensagem 3
 ...
 ```
