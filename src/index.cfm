@@ -11,7 +11,7 @@
         <meta charset="UTF-8">
     </head>
     <body>
-        <h1>MySQL!</h1>
+        <h1>MySQL Lucee App</h1>
         <cfif firstMessage.recordcount gt 0>
             <cfoutput query="firstMessage">
                 <p>
