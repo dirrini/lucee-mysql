@@ -19,6 +19,7 @@ Projeto mínimo em Lucee que acessa a tabela `mensagens` e exibe as mensagens e 
 A página deve mostrar:
 
 ```
-<strong>Autor</strong> Mensagem
+**Autor 1** Mensagem 1
+**Autor 2** Mensagem 2
 ...
 ```

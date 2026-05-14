@@ -1,0 +1,50 @@
+name: Lucee & MySQL CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      # Opcional: Você pode rodar o MySQL como um serviço do GitHub Actions
+      # mas como você já tem o docker-compose pronto, vamos usá-lo!
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build and Start Containers
+        run: docker-compose up -d
+
+      - name: Wait for MySQL to be ready
+        run: |
+          # Aguarda o MySQL aceitar conexões antes de prosseguir
+          until docker exec lucee-mysql-db mysqladmin ping -ppassword | grep "mysqld is alive"; do
+            echo "Aguardando MySQL..."
+            sleep 3
+          done
+
+      - name: Verify Application Response
+        run: |
+          # Testa se o container do Lucee está respondendo na porta 1988
+          # Usamos --retry para dar tempo ao Tomcat de inicializar
+          curl -f --retry 10 --retry-delay 5 http://localhost:1988/index.cfm || exit 1
+
+      - name: Check Database Content
+        run: |
+          # Executa um teste simples para ver se os dados do init-db.sql estão lá
+          RESULT=$(docker exec lucee-mysql-db mysql -u root -ppassword luceeapp -N -e "SELECT COUNT(*) FROM mensagens;")
+          if [ "$RESULT" -eq 0 ]; then
+            echo "Erro: Banco de dados está vazio!"
+            exit 1
+          fi
+          echo "Sucesso: Encontradas $RESULT mensagens no banco."
+
+      - name: Stop Containers
+        if: always()
+        run: docker-compose down -v
